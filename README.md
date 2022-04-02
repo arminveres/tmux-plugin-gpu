@@ -5,8 +5,12 @@ tmux plugin showing GPU usage
 
 Requirements
 ------------
-Nvidia cuda toolkit must be installed (the plugin internally calls `nvidia-smi`)
+For NVIDIA monitoring cuda toolkit must be installed (the plugin internally calls `nvidia-smi`)
 
+For AMD change the read/execute permission
+```sh
+sudo chmod a+rx /sys/class/drm/card0/device/gpu_busy_percent
+```
 
 Installation
 ------------
@@ -14,8 +18,8 @@ Installation
 
 Add plugin to the list of TPM plugins in `.tmux.conf`:
 
-```
-set -g @plugin 'danijoo/tmux-plugin-simple-gpu'
+```tmux
+set -g @plugin 'arminveres/tmux-simple-gpu'
 ```
 
 Hit `prefix + I` to fetch the plugin and source it.
@@ -33,4 +37,5 @@ In order to see GPU usage via this tmux plugin, add the following command to you
 
 Kudos
 ----------
-I used https://github.com/pwittchen/tmux-plugin-ram as a base for this project.
+I used https://github.com/danijoo/tmux-plugin-simple-gpu as a base/fork for this
+and he in turn used https://github.com/pwittchen/tmux-plugin-ram as a base.
