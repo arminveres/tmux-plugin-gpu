@@ -35,7 +35,13 @@ In order to see GPU usage via this tmux plugin, add the following command to you
 #{gpu}
 ```
 
-Kudos
-----------
+TODO
+----
+
+- [x] add AMD GPU support
+- [ ] add Intel iGPU support
+
+Acknowledgements
+----------------
 I used https://github.com/danijoo/tmux-plugin-simple-gpu as a base/fork for this
 and he in turn used https://github.com/pwittchen/tmux-plugin-ram as a base.
