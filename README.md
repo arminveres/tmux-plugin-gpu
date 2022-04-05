@@ -1,4 +1,4 @@
-# tmux-plugin-simple-gpu
+# tmux-plugin-gpu
 tmux plugin showing GPU usage
 
 ![Example](./tmux_plugin_gpu.jpg)
