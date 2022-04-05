@@ -1,7 +1,7 @@
 # tmux-plugin-simple-gpu
 tmux plugin showing GPU usage
 
-![Example](example.png)
+![Example](./tmux_plugin_gpu.jpg)
 
 Requirements
 ------------
@@ -39,7 +39,8 @@ TODO
 ----
 
 - [x] add AMD GPU support
-- [ ] add Intel iGPU support
+- [ ] move over to radeontop (allows VRAM usage, clock etc.)
+- [ ] add Intel iGPU support (intel_gpu_top, also VRAM usage, clock etc.)
 
 Acknowledgements
 ----------------
