@@ -5,6 +5,8 @@ tmux plugin showing GPU usage
 
 Requirements
 ------------
+ATM `glxinfo` is required for determining the vendor.
+
 For NVIDIA monitoring cuda toolkit must be installed (the plugin internally calls `nvidia-smi`)
 
 For AMD change the read/execute permission
