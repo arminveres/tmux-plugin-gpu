@@ -9,7 +9,9 @@ ATM `glxinfo` is required for determining the vendor.
 
 For NVIDIA monitoring cuda toolkit must be installed (the plugin internally calls `nvidia-smi`)
 
-For AMD change the read/execute permission
+For AMD install radeontop
+
+or change the read/execute permission (change in the `scripts/gpu.sh` as well)
 ```sh
 sudo chmod a+rx /sys/class/drm/card0/device/gpu_busy_percent
 ```
@@ -41,7 +43,7 @@ TODO
 ----
 
 - [x] add AMD GPU support
-- [ ] move over to radeontop (allows VRAM usage, clock etc.)
+- [x] move over to radeontop (allows VRAM usage, clock etc.)
 - [ ] add Intel iGPU support (intel_gpu_top, also VRAM usage, clock etc.)
 
 Acknowledgements
