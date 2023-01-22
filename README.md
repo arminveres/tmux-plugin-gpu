@@ -19,7 +19,7 @@ For AMD install radeontop
 Add plugin to the list of TPM plugins in `.tmux.conf`:
 
 ```tmux
-set -g @plugin 'arminveres/tmux-simple-gpu'
+set -g @plugin 'arminveres/tmux-plugin-gpu'
 ```
 
 Hit `prefix + I` to fetch the plugin and source it.
@@ -45,3 +45,6 @@ In order to see GPU usage via this tmux plugin, add the following command to you
 
 I used https://github.com/danijoo/tmux-plugin-simple-gpu as a base/fork for this
 and he in turn used https://github.com/pwittchen/tmux-plugin-ram as a base.
+
+In addition I also used helpers from [samoshkin's sysstat plugin](https://github.com/samoshkin/tmux-plugin-sysstat),
+which greatly eased the dealings with tmux!
