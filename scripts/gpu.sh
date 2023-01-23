@@ -1,25 +1,9 @@
 #!/usr/bin/env bash
 
-function fcomp() {
-	awk -v n1="$1" -v n2="$2" 'BEGIN {if (n1<n2) exit 0; exit 1}'
-}
+CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$CURRENT_DIR/helpers.sh"
 
-function get_tmux_option() {
-	local option="$1"
-	local default_value="$2"
-	local option_value="$(tmux show-option -gqv "$option")"
-	if [ -z "$option_value" ]; then
-		echo "$default_value"
-	else
-		echo "$option_value"
-	fi
-}
-
-function set_tmux_option() {
-	local option="$1"
-	local value="$2"
-	tmux set-option -gq "$option" "$value"
-}
+vendor=''
 
 function get_gpu_color() {
 
@@ -40,8 +24,6 @@ function get_gpu_color() {
 	fi
 }
 
-vendor=''
-
 function get_gpu_vendor() {
 	local amd=$(lspci | grep -i amd)
 	local nvidia=$(lspci | grep -i nvidia)
@@ -58,7 +40,7 @@ function get_gpu_vendor() {
 }
 
 function print_gpu_pusage() {
-	local gpu_view_tmpl=$(get_tmux_option "@sysstat_cpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
+	local gpu_view_tmpl=$(get_tmux_option "@sysstat_gpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
 
 	case "$vendor" in
 	AMD)
