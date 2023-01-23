@@ -2,15 +2,24 @@
 
 tmux plugin showing GPU usage
 
-![Example](./tmux_plugin_gpu.jpg)
+![image](https://user-images.githubusercontent.com/45210978/214135521-e0a729af-9aed-4fac-81c5-79f189b74374.png)
 
 ## Requirements
 
-ATM `glxinfo` is required for determining the vendor.
+At the moment `glxinfo` is required for determining the vendor.
+```bash
+dnf install glx-utils
+```
 
 For NVIDIA monitoring cuda toolkit must be installed (the plugin internally calls `nvidia-smi`)
+```bash
+dnf install xorg-x11-drv-nvidia-cuda
+```
 
 For AMD install radeontop
+```bash
+dnf install radeontop
+```
 
 ## Installation
 
@@ -34,12 +43,16 @@ In order to see GPU usage via this tmux plugin, add the following command to you
 #{gpu}
 ```
 
+By default the usage in percentage and in vram are configured with the following setting, which also sums up the 2 options for now.
+```tmux
+set -g @sysstat_gpu_view_tmpl 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}'
+```
+
 ## TODO
 
-- [x] add AMD GPU support
-- [x] move over to radeontop
 - [ ] add Intel iGPU support
 - [ ] add support for VRAM usage, clock etc.
+  - [x] VRAM Support
 
 ## Acknowledgements
 
