@@ -45,7 +45,7 @@ function print_gpu_pusage() {
 	case "$vendor" in
 	AMD)
 		gpu_info=$(radeontop -c -d - -l 1 | grep gpu)
-		gpu_pusage=$(echo "$gpu_info" | awk '{print $5}' | sed 's/%,/%/')
+		gpu_pusage=$(echo "$gpu_info" | awk '{print $5}' | sed 's/%,//')
 		gpu_mb_usage=$(echo "$gpu_info" | awk '{print $28}' | sed 's/.[0-9]*mb,//')
 		gpu_gb_usage=$(printf %.2f "$gpu_mb_usage"e-3)
 		;;
