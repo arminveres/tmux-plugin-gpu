@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$CURRENT_DIR/helpers.sh"
 
@@ -40,6 +42,7 @@ function get_gpu_vendor() {
 }
 
 function print_gpu_pusage() {
+	local gpu_pusage=""
 	local gpu_view_tmpl=$(get_tmux_option "@sysstat_gpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
 
 	case "$vendor" in
@@ -53,17 +56,17 @@ function print_gpu_pusage() {
 		gpu_pusage=$(nvidia-smi -q -d UTILIZATION | grep Gpu | awk '{print $3}')
 		;;
 	INTEL)
-		echo INTEL
 		# TODO: add intel_top
+		# echo INTEL
 		;;
 	Mesa/X.org)
-		echo SSH
 		# NOTE: should be a non issue now
+		# echo SSH
 		;;
 	esac
 
 	if [ -z "$gpu_pusage" ]; then
-		echo "-"
+		echo $vendor
 	else
 		local gpu_view="$gpu_view_tmpl"
 		gpu_pusage_colored=$(get_gpu_color "$gpu_pusage")
