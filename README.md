@@ -6,7 +6,7 @@ tmux plugin showing GPU usage
 
 ## Requirements
 
-At the moment `glxinfo` and `lspcie` are required for determining the vendor.
+At the moment `glxinfo` and `lspci` are required for determining the vendor.
 
 ```bash
 # NixOS
