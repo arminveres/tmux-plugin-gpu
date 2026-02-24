@@ -6,18 +6,28 @@ tmux plugin showing GPU usage
 
 ## Requirements
 
-At the moment `glxinfo` is required for determining the vendor.
+At the moment `glxinfo` and `lspcie` are required for determining the vendor.
+
 ```bash
+# NixOS
+nix shell "nixpkgs#mesa-demos"
+nix shell "nixpkgs#pciutils"
+# Fedora
 dnf install glx-utils
 ```
 
-For NVIDIA monitoring cuda toolkit must be installed (the plugin internally calls `nvidia-smi`)
+For NVIDIA monitoring CUDA toolkit must be installed (the plugin internally calls `nvidia-smi`)
+
 ```bash
+# NixOS: tbd
+# Fedora
 dnf install xorg-x11-drv-nvidia-cuda
 ```
 
-For AMD install radeontop
+For AMD install `radeontop`.
+
 ```bash
+nix shell "nixpkgs#radeontop"
 dnf install radeontop
 ```
 
@@ -44,15 +54,16 @@ In order to see GPU usage via this tmux plugin, add the following command to you
 ```
 
 By default the usage in percentage and in vram are configured with the following setting, which also sums up the 2 options for now.
+
 ```tmux
 set -g @sysstat_gpu_view_tmpl 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}'
+# Set extra opts for radeontop, e.g., for multi GPU setups.
+set -g @sysstat_gpu_opts "--path /dev/dri/renderD128"
 ```
 
 ## TODO
 
 - [ ] add Intel iGPU support
-- [ ] add support for VRAM usage, clock etc.
-  - [x] VRAM Support
 
 ## Acknowledgements
 
