@@ -25,24 +25,27 @@ function get_gpu_color() {
 }
 
 function get_gpu_vendor() {
+	# allow pipefail, not propagating error
+	set +o pipefail
 	if lspci | grep -q -i amd; then
 		echo "AMD"
-		return
 	elif lspci | grep -q -i nvidia; then
 		echo "NVIDIA"
-		return
 	elif lspci | grep -q -i intel; then
 		# Even if there is a second GPU e.g intel, take the first dedicated one
 		echo "INTEL"
-		return
 	fi
+	set -o pipefail
 }
 
 function print_gpu_pusage() {
 	local gpu_pusage=""
-	local gpu_view_tmpl=$(get_tmux_option "@sysstat_gpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
-	local gpu_extra_options=$(get_tmux_option "@sysstat_gpu_opts" '')
-	local vendor=$(get_gpu_vendor)
+	# shellcheck disable=SC2155
+	readonly gpu_view_tmpl=$(get_tmux_option "@sysstat_gpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
+	# shellcheck disable=SC2155
+	readonly gpu_extra_options=$(get_tmux_option "@sysstat_gpu_opts" '')
+	# shellcheck disable=SC2155
+	readonly vendor=$(get_gpu_vendor)
 
 	case "$vendor" in
 	AMD)
@@ -83,7 +86,7 @@ function print_gpu_pusage() {
 		gpu_view="${gpu_view//'#{gpu.color2}'/$(echo "$gpu_pusage_colored" | awk '{ print $2 }')}"
 		gpu_view="${gpu_view//'#{gpu.color3}'/$(echo "$gpu_pusage_colored" | awk '{ print $3 }')}"
 		if [ -n "$gpu_gb_usage" ]; then
-			gpu_view="${gpu_view//'#{gpu.gbused}'/$(echo "$gpu_gb_usage"GB)}"
+			gpu_view="${gpu_view//'#{gpu.gbused}'/"$gpu_gb_usage"GB}"
 		else
 			gpu_view='GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default]'
 		fi
