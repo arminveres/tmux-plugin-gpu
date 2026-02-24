@@ -44,16 +44,26 @@ function get_gpu_vendor() {
 function print_gpu_pusage() {
 	local gpu_pusage=""
 	local gpu_view_tmpl=$(get_tmux_option "@sysstat_gpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
+	local gpu_extra_options=$(get_tmux_option "@sysstat_gpu_opts" '')
 
 	case "$vendor" in
 	AMD)
-		gpu_info=$(radeontop -c -d - -l 1 | grep gpu)
+		gpu_info=$(
+			# shellcheck disable=SC2086
+			radeontop --dump - --limit 1 $gpu_extra_options |
+				grep gpu
+		)
 		gpu_pusage=$(echo "$gpu_info" | awk '{print $5}' | sed 's/%,//')
 		gpu_mb_usage=$(echo "$gpu_info" | awk '{print $28}' | sed 's/.[0-9]*mb,//')
 		gpu_gb_usage=$(printf %.2f "$gpu_mb_usage"e-3)
 		;;
 	NVIDIA)
-		gpu_pusage=$(nvidia-smi -q -d UTILIZATION | grep Gpu | awk '{print $3}')
+		gpu_pusage=$(
+
+			# shellcheck disable=SC2086
+			nvidia-smi -q -d UTILIZATION $gpu_extra_options |
+				grep Gpu | awk '{print $3}'
+		)
 		;;
 	INTEL)
 		# TODO: add intel_top
