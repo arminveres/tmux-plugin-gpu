@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$CURRENT_DIR/helpers.sh"
-
-vendor=''
 
 function get_gpu_color() {
 
@@ -27,17 +25,16 @@ function get_gpu_color() {
 }
 
 function get_gpu_vendor() {
-	local amd=$(lspci | grep -i amd)
-	local nvidia=$(lspci | grep -i nvidia)
-	local intel=$(lspci | grep -i intel)
-
-	if [[ -n $amd ]]; then
-		vendor="AMD"
-	elif [[ -n $nvidia ]]; then
-		vendor="NVIDIA"
-	elif [[ -n $intel ]]; then
-		# NOTE: even if there is a second GPU e.g intel, take the first dedicated one
-		vendor="INTEL"
+	if lspci | grep -q -i amd; then
+		echo "AMD"
+		return
+	elif lspci | grep -q -i nvidia; then
+		echo "NVIDIA"
+		return
+	elif lspci | grep -q -i intel; then
+		# Even if there is a second GPU e.g intel, take the first dedicated one
+		echo "INTEL"
+		return
 	fi
 }
 
@@ -45,6 +42,7 @@ function print_gpu_pusage() {
 	local gpu_pusage=""
 	local gpu_view_tmpl=$(get_tmux_option "@sysstat_gpu_view_tmpl" 'GPU:#[fg=#{gpu.color}]#{gpu.pused}#[default] #{gpu.gbused}')
 	local gpu_extra_options=$(get_tmux_option "@sysstat_gpu_opts" '')
+	local vendor=$(get_gpu_vendor)
 
 	case "$vendor" in
 	AMD)
@@ -75,8 +73,8 @@ function print_gpu_pusage() {
 		;;
 	esac
 
-	if [ -z "$gpu_pusage" ]; then
-		echo $vendor
+	if [[ -z "$gpu_pusage" ]]; then
+		echo "$vendor"
 	else
 		local gpu_view="$gpu_view_tmpl"
 		gpu_pusage_colored=$(get_gpu_color "$gpu_pusage")
@@ -93,9 +91,4 @@ function print_gpu_pusage() {
 	fi
 }
 
-function main() {
-	get_gpu_vendor
-	print_gpu_pusage
-}
-
-main
+print_gpu_pusage
