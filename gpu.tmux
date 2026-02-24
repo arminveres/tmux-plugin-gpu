@@ -27,9 +27,5 @@ function update_tmux_option() {
 	set_tmux_option "$option" "$new_option_value"
 }
 
-function main() {
-	update_tmux_option "status-right"
-	update_tmux_option "status-left"
-}
-
-main
+update_tmux_option "status-right"
+update_tmux_option "status-left"
